@@ -12,6 +12,7 @@ class CategoryRouter {
         this.router.get('/:id', CategoryController.getCategoryById);
         this.router.post('/', CategoryController.createCategory);
         this.router.put('/', CategoryController.updateCategory);
+        this.router.delete('/:id', CategoryController.removeCategory);
     }
 }
 
