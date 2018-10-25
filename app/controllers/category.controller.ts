@@ -42,7 +42,11 @@ class CategoryController {
    * Response: {ICategoryDocument}
    */
     public static createCategory(req, res) {
-       return res.status(201).send();
+        Category.create(req.body, (err, newCat) => {
+            if (err) return res.status(500).send(err);
+            return res.status(201).send();
+        });
+       
     }
 
      /**
