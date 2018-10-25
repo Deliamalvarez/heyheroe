@@ -13,7 +13,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "basePath": "/v2",
+  "basePath": "/api",
   "tags": [
     {
       "name": "hey heroe uy",
@@ -29,11 +29,34 @@
     }
   ],
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {
     "/category": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Get list of categories",
+        "description": "",
+        "operationId": "getListCategory",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      },
       "post": {
         "tags": [
           "category"
@@ -59,7 +82,7 @@
           }
         ],
         "responses": {
-          "40o": {
+          "400": {
             "description": "Invalid input"
           }
         },
