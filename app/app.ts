@@ -6,6 +6,7 @@ import * as mongoose from 'mongoose';
 import { Settings } from "./settings/conf";
 import * as cors from 'cors';
 import categoryRoutes from "./routes/category.routes";
+import serviceRoutes from "./routes/services.routes";
 
 class App {
 
@@ -55,6 +56,7 @@ class App {
         });
         this.app.use('/', router);
         this.app.use(`/api/category`, categoryRoutes);
+        this.app.use(`/api/service`, serviceRoutes);
         router.options("*", cors(options));
       }
     
