@@ -1,4 +1,4 @@
-import { Category, ICategoryDocument } from "../models/category.model";
+import { Category, ICategoryDocument } from '../models/category.model';
 
 class CategoryController {
 
@@ -25,14 +25,14 @@ class CategoryController {
     public static getCategoryById(req, res) {
         if (!req.params.id) {
             return res.status(400).send({
-                message: "An id must be provided"
+                message: 'An id must be provided'
             });
         }
 
         Category.findById(req.params.id, (err, category) => {
             if (err) return res.status(500).send(err);
             if (!category) {
-                return res.status(404).send({message: "Category not found"});  
+                return res.status(404).send({message: 'Category not found'});  
             }
             return res.send(category);
         });
@@ -47,7 +47,7 @@ class CategoryController {
     public static createCategory(req, res) {
         Category.create(req.body, (err, newCat) => {
             if (err) return res.status(500).send(err);
-            return res.status(201).send();
+            return res.status(201).send(newCat);
         });
        
     }
@@ -63,7 +63,7 @@ class CategoryController {
         debugger;
         if (err) return res.status(500).send(err);
         if (!updatedCategory) {
-            return res.status(404).send({message: "Category not found"});
+            return res.status(404).send({message: 'Category not found'});
         }
         return res.status(200).send(updatedCategory);
     });

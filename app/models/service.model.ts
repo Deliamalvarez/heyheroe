@@ -2,7 +2,8 @@ import { Document, Model, model, Schema } from "mongoose";
 
 interface IServiceDocument extends Document {
     name: String,
-    description: String
+    description: String,
+    category: Schema.Types.ObjectId
 }
 //Model interface
 interface IServiceModel extends IServiceDocument {
@@ -17,8 +18,8 @@ const ServiceSchema = new Schema({
         type: String,
         required: false
     },
-    categoryId: {
-        type: String,
+    category: {
+        type: Schema.Types.ObjectId,
         ref: 'category'
     }
 }, { versionKey: false });
