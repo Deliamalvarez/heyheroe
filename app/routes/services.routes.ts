@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import {ServiceController}  from '../controllers/service.controller';
+import { ServiceController } from '../controllers/service.controller';
 
 class ServiceRouter {
     public router: Router
@@ -7,7 +7,7 @@ class ServiceRouter {
         this.router = Router();
     }
 
-    init(){
+    init() {
         this.router.get('/', ServiceController.getAllServices);
         this.router.get('/:id', ServiceController.getServiceById);
         this.router.post('/', ServiceController.createService);

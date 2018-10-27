@@ -41,7 +41,7 @@ class CategoryController {
     /**
    * Create a category given name and description
    * @method POST
-   * @param {name: String, description: string}
+   * @param {name: String, description: String}
    * Response: {ICategoryDocument}
    */
     public static createCategory(req, res) {
@@ -55,7 +55,7 @@ class CategoryController {
      /**
    * Update a category given name and/or description
    * @method PUT
-   * @param {name: String, description: string}
+   * @param {name: String, description: String}
    * Response: {ICategoryDocument}
    */
   public static updateCategory(req, res) {
