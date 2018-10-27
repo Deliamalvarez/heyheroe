@@ -12,7 +12,7 @@ class UserProfileRouter {
     this.router.get('/:id', UserProfileController.getUserProfileById);
     this.router.post('/', UserProfileController.createUserProfile);
     this.router.put('/', UserProfileController.updateCategory);
-    this.router.delete('/:id', UserProfileController.removeUserProfile);
+    //this.router.delete('/:id', UserProfileController.removeUserProfile);
   }
 }
 
