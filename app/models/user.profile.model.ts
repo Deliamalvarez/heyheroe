@@ -1,23 +1,27 @@
 import { Document, Model, model, Schema } from "mongoose";
 
 interface IUserProfileDocument extends Document {
-  name: String,
-  description: String,
-  category: Schema.Types.ObjectId
+  firstName: String,
+  lastName: String,
+  password: String,
+  email: String,
+  phone: String,
+  ci:  String,
+  address: String
 }
 //Model interface
 interface IUserProfile extends IUserProfileDocument {
 }
 // MongoDb schema
 const UserProfileSchema = new Schema({
-  name: {
+  firstName: {
       type: String,
       required: true
   },
-  userName: {
+  lastName: {
     type: String,
     required: true
-  },
+},
   password: {
     type: String,
     required: true
@@ -33,8 +37,12 @@ const UserProfileSchema = new Schema({
   address: {
       type: String,
       required: false
+  },
+  ci: {
+      type: String,
+      required: false
   }
 }, { versionKey: false });
 
-const UserProfile: Model<IUserProfile> = model<IUserProfile>("UserProfile", UserProfileSchema);
+const UserProfile: Model<IUserProfile> = model<IUserProfile>("userprofile", UserProfileSchema);
 export { UserProfile, IUserProfileDocument };
