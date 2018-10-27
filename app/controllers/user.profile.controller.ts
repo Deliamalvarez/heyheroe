@@ -8,7 +8,10 @@ class UserProfileController {
    */
 
   public static getAllUsersProfile(req, res) {
-    UserProfile.find((err, usersProfile) => {
+    UserProfile
+    .find()
+    .select('-password')
+    .exec((err, usersProfile) => {
       if (err) return res.status(500).send(err);
       return res.json(usersProfile);
     });
@@ -29,7 +32,10 @@ class UserProfileController {
       });
     }
 
-    UserProfile.findById(req.params.id, (err, userProfile) => {
+    UserProfile
+    .findById(req.params.id)
+    .select('-password')
+    .exec( (err, userProfile) => {
       if (err) return res.status(500).send(err);
       if (!userProfile) {
         return res.status(404).send({ message: 'User Profile not found' });
@@ -47,6 +53,8 @@ class UserProfileController {
   public static createUserProfile(req, res) {
     UserProfile.create(req.body, (err, newUserProfile) => {
       if (err) return res.status(500).send(err);
+      newUserProfile = newUserProfile.toObject();
+      delete newUserProfile.password;
       return res.status(201).send(newUserProfile);
     });
 

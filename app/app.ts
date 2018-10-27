@@ -7,7 +7,7 @@ import { Settings } from "./settings/conf";
 import * as cors from 'cors';
 import categoryRoutes from "./routes/category.routes";
 import serviceRoutes from "./routes/services.routes";
-import userProfileRoutes from "routes/user.profile.routes";
+import userProfileRoutes from "./routes/user.profile.routes";
 
 class App {
 
@@ -56,9 +56,9 @@ class App {
       });
     });
     this.app.use('/', router);
-    this.app.use('/api/user', userProfileRoutes);
     this.app.use(`/api/category`, categoryRoutes);
     this.app.use(`/api/service`, serviceRoutes);
+    this.app.use(`/api/user`, userProfileRoutes);
     router.options("*", cors(options));
   }
 
