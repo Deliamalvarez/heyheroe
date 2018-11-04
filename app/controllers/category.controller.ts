@@ -10,7 +10,10 @@ class CategoryController {
 
     public static getAllCategories(req, res) {
         Category.find((err, categories) => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             return res.json(categories);
         });
     }
@@ -30,7 +33,10 @@ class CategoryController {
         }
 
         Category.findById(req.params.id, (err, category) => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             if (!category) {
                 return res.status(404).send({message: 'Category not found'});  
             }
@@ -46,7 +52,10 @@ class CategoryController {
    */
     public static createCategory(req, res) {
         Category.create(req.body, (err, newCat) => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             return res.status(201).send(newCat);
         });
        
@@ -60,8 +69,10 @@ class CategoryController {
    */
   public static updateCategory(req, res) {
     Category.findByIdAndUpdate(req.body.id, req.body, {new:true}, (err, updatedCategory)=> {
-        debugger;
-        if (err) return res.status(500).send(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).send(err);
+          };
         if (!updatedCategory) {
             return res.status(404).send({message: 'Category not found'});
         }
@@ -78,7 +89,10 @@ class CategoryController {
 
  public static removeCategory(req, res) {
      Category.findByIdAndRemove(req.params.id, err => {
-        if (err) return res.status(500).send(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).send(err);
+          };
         res.status(204).send();
      });
  }

@@ -8,6 +8,10 @@ import * as cors from 'cors';
 import categoryRoutes from "./routes/category.routes";
 import serviceRoutes from "./routes/services.routes";
 import userProfileRoutes from "./routes/user.profile.routes";
+import loginRoutes from "./routes/login.routes";
+import imageRoutes from "./routes/image.routes";
+
+var jwt = require('jsonwebtoken');
 
 class App {
 
@@ -56,12 +60,27 @@ class App {
       });
     });
     this.app.use('/', router);
-    this.app.use(`/api/category`, categoryRoutes);
-    this.app.use(`/api/service`, serviceRoutes);
-    this.app.use(`/api/user`, userProfileRoutes);
+    this.app.use(`/api/login`, loginRoutes);
+    this.app.use(`/api/img`, imageRoutes);
+    this.app.use(`/api/category`, this.validateAuth, categoryRoutes);
+    this.app.use(`/api/service`, this.validateAuth, serviceRoutes);
+    this.app.use(`/api/user`, this.validateAuth, userProfileRoutes);
     router.options("*", cors(options));
   }
 
+  private validateAuth(req, res, next) {
+    var token = req.headers['authorization'];
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    jwt.verify(req.headers['authorization'], Settings.secret, function (err, decoded) {
+      if (err) {
+        res.json({ status: "error", message: err.message, data: null });
+      } else {
+        // add user id to request
+        req.body.userId = decoded.id;
+        next();
+      }
+    });
+  }
 
 }
 

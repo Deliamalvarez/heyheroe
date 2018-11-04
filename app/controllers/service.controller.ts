@@ -12,7 +12,10 @@ class ServiceController {
         Service.find()
             .populate('category')
             .exec((err, services) => {
-                if (err) return res.status(500).send(err);
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                  };
                 return res.json(services);
             });
     }
@@ -34,13 +37,15 @@ class ServiceController {
         Service.findById(req.params.id)
             .populate('category')
             .exec((err, service) => {
-                if (err) return res.status(500).send(err);
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                  };
                 if (!service) {
                     return res.status(404).send({ message: 'Service not found' });
                 }
                 return res.send(service);
             });
-
     }
 
 
@@ -52,10 +57,12 @@ class ServiceController {
    */
     public static createService(req, res) {
         Service.create(req.body, (err, newServ) => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             return res.status(201).send(newServ);
         });
-
     }
 
     /**
@@ -66,7 +73,10 @@ class ServiceController {
    */
     public static updateService(req, res) {
         Service.findByIdAndUpdate(req.body.id, req.body, { new: true }, (err, updatedService) => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             if (!updatedService) {
                 return res.status(404).send({ message: 'Service not found' });
             }
@@ -84,11 +94,13 @@ class ServiceController {
 
     public static removeService(req, res) {
         Service.findByIdAndRemove(req.params.id, err => {
-            if (err) return res.status(500).send(err);
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              };
             res.status(204).send();
         });
     }
-
 }
 
 export { ServiceController }

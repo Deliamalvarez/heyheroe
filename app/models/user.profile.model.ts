@@ -1,5 +1,7 @@
 import { Document, Model, model, Schema } from "mongoose";
-// import bcrypt from "bcrypt";
+import  * as bcryptjs  from "bcryptjs";
+
+const saltRounds = 10;
 
 interface IUserProfileDocument extends Document {
   firstName: String,
@@ -8,7 +10,8 @@ interface IUserProfileDocument extends Document {
   email: String,
   phone: String,
   ci:  String,
-  address: String
+  address: String,
+  imageId: Schema.Types.ObjectId
 }
 //Model interface
 interface IUserProfile extends IUserProfileDocument {
@@ -42,15 +45,15 @@ const UserProfileSchema = new Schema({
   ci: {
       type: String,
       required: false
-  }
+  },
+  imageId: {
+    type: Schema.Types.ObjectId,
+    ref: 'image'
+}
 }, { versionKey: false });
 
 UserProfileSchema.pre('save', async function(next){
-  //'this' refers to the current document about to be saved
-  const user = this;
-  //Hash the password with a salt round of 10, the higher the rounds the more secure, but the slower
-  //your application becomes.
-  const hash = this.password; // await bcrypt.hash(this.password, 10);
+  const hash =  bcryptjs.hashSync(this.password, saltRounds);
   //Replace the plain text password with the hash and then store it
   this.password = hash;
   //Indicates we're done and moves on to the next middleware
@@ -62,7 +65,7 @@ UserProfileSchema.methods.isValidPassword = async function(password){
   const user = this;
   //Hashes the password sent by the user for login and checks if the hashed password stored in the 
   //database matches the one sent. Returns true if it does else false.
-  const compare = ''; // await bcrypt.compare(password, user.password);
+  const compare = bcryptjs.compareSync(password, user.password);
   return compare;
 }
 

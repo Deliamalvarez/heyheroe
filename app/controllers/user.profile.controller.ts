@@ -12,7 +12,10 @@ class UserProfileController {
     .find()
     .select('-password')
     .exec((err, usersProfile) => {
-      if (err) return res.status(500).send(err);
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      };
       return res.json(usersProfile);
     });
   }
@@ -36,7 +39,10 @@ class UserProfileController {
     .findById(req.params.id)
     .select('-password')
     .exec( (err, userProfile) => {
-      if (err) return res.status(500).send(err);
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      };
       if (!userProfile) {
         return res.status(404).send({ message: 'User Profile not found' });
       }
@@ -44,21 +50,7 @@ class UserProfileController {
     });
   }
 
-  /**
-  * Create an User Profile given at least name, userName, password and email
-  * @method POST
-  * @param {name: String, userName: String, password: String, email: String}
-  * Response: {IUserProfileDocument}
-  */
-  public static createUserProfile(req, res) {
-    UserProfile.create(req.body, (err, newUserProfile) => {
-      if (err) return res.status(500).send(err);
-      newUserProfile = newUserProfile.toObject();
-      delete newUserProfile.password;
-      return res.status(201).send(newUserProfile);
-    });
-
-  }
+  
 
   /**
  * Update a User Profile given name, userName, password, email, phone and/or address
@@ -66,15 +58,19 @@ class UserProfileController {
  * @param {name: String, userName: String, password: String, email: String, phone: String, address: String}
  * Response: {IUserProfileDocument}
  */
-  public static updateCategory(req, res) {
-    UserProfile.findByIdAndUpdate(req.body.id, req.body, { new: true }, (err, updatedUserProfile) => {
-      debugger;
-      if (err) return res.status(500).send(err);
+  public static updateUserProfile(req, res) {
+    UserProfile.findByIdAndUpdate(req.body.id, req.body, { new: true })
+    .select('-password')
+    .exec((err, updatedUserProfile) => {
       if (!updatedUserProfile) {
         return res.status(404).send({ message: 'User profile not found' });
       }
       return res.status(200).send(updatedUserProfile);
-    });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).send(err);
+    });;
   }
 
   /**
@@ -86,7 +82,7 @@ class UserProfileController {
 
   /*public static removeUserProfile(req, res) {
     UserProfile.findByIdAndRemove(req.params.id, err => {
-      if (err) return res.status(500).send(err);
+      if (err) return err;
       res.status(204).send();
     });
   }*/
