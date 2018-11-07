@@ -1,4 +1,5 @@
 import { UserProfile, IUserProfileDocument } from '../models/user.profile.model';
+import { Utils } from './utils';
 
 class UserProfileController {
   /**
@@ -29,12 +30,7 @@ class UserProfileController {
    */
 
   public static getUserProfileById(req, res) {
-    if (!req.params.id) {
-      return res.status(400).send({
-        message: 'An id must be provided'
-      });
-    }
-
+    Utils.validateId(req, res);
     UserProfile
     .findById(req.params.id)
     .select('-password')

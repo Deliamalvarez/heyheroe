@@ -1,4 +1,5 @@
 import { Service, IServiceDocument } from '../models/service.model';
+import { Utils } from './utils';
 
 class ServiceController {
 
@@ -28,11 +29,7 @@ class ServiceController {
    */
 
     public static getServiceById(req, res) {
-        if (!req.params.id) {
-            return res.status(400).send({
-                message: 'An id must be provided'
-            });
-        }
+        Utils.validateId(req, res);
 
         Service.findById(req.params.id)
             .populate('category')

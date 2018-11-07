@@ -1,5 +1,6 @@
 import { UserProfile, IUserProfileDocument } from '../models/user.profile.model';
 import { Settings } from '../settings/conf';
+import { Utils } from './utils';
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -12,16 +13,33 @@ class LoginController {
   * Response: {IUserProfileDocument}
   */
     public static signup(req, res) {
-        UserProfile.create(req.body, (err, newUserProfile) => {
-              if (err) {
-                console.log(err);
-                return res.status(500).send(err);
-              }
-                newUserProfile = newUserProfile.toObject();
-                delete newUserProfile.password;
-                return res.status(201).send(newUserProfile);
-            })
-
+        const image = req.body.profileImage;
+        let processImage: Promise<any> | Promise<void> = image ? 
+            Utils.uploadImg(Buffer.from(image.split(",")[1],'base64')) :
+            Promise.resolve();
+        Promise.all([processImage]).then(([img]) => {
+            const newUserRequest = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                password: req.bdoy.password,
+                email: req.body.email,
+                phone: req.body.phone,
+                ci:  req.body.ci,
+                address: req.body.address,
+                imageId: img ? img : "" 
+            }
+            UserProfile.create(newUserRequest, (err, newUserProfile) => {
+                if (err) {
+                  console.log(err);
+                  return res.status(500).send(err);
+                }
+                  newUserProfile = newUserProfile.toObject();
+                  delete newUserProfile.password;
+                  return res.status(201).send(newUserProfile);
+              })
+  
+        });
+        
     }
 
     public static signin(req, res) {

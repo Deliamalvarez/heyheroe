@@ -1,4 +1,5 @@
 import { Category, ICategoryDocument } from '../models/category.model';
+import { Utils } from './utils';
 
 class CategoryController {
 
@@ -26,11 +27,7 @@ class CategoryController {
    */
 
     public static getCategoryById(req, res) {
-        if (!req.params.id) {
-            return res.status(400).send({
-                message: 'An id must be provided'
-            });
-        }
+        Utils.validateId(req, res);
 
         Category.findById(req.params.id, (err, category) => {
             if (err) {
