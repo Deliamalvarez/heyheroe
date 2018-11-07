@@ -34,9 +34,7 @@ paths:
         '400':
           description: Invalid input
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
     post:
       tags:
         - category
@@ -58,9 +56,7 @@ paths:
         '400':
           description: Invalid input
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
     put:
       tags:
         - category
@@ -86,9 +82,7 @@ paths:
         '500':
           description: Internal Server Error
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
   /category/{id}:
     get:
       tags:
@@ -150,9 +144,7 @@ paths:
         '400':
           description: Invalid input
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
     post:
       tags:
         - service
@@ -174,9 +166,7 @@ paths:
         '400':
           description: Invalid input
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
     put:
       tags:
         - category
@@ -202,9 +192,7 @@ paths:
         '500':
           description: Internal Server Error
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - ApiKeyAuth: []
   /user/login:
     get:
       tags:
@@ -256,30 +244,6 @@ paths:
       responses:
         default:
           description: successful operation
-  '/user/{id}':
-    get:
-      tags:
-        - user
-      summary: Get user by user id
-      description: ''
-      operationId: getUserById
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: 'The id that needs to be fetched. Use 5bd4b30989d7f806b4d5b631 for testing. '
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/User'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
     put:
       tags:
         - user
@@ -325,18 +289,35 @@ paths:
           description: Invalid username supplied
         '404':
           description: User not found
+  '/user/{id}':
+    get:
+      tags:
+        - user
+      summary: Get user by user id
+      description: ''
+      operationId: getUserById
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched. Use 5bd4b30989d7f806b4d5b631 for testing. '
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
 securityDefinitions:
-  petstore_auth:
-    type: oauth2
-    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-    flow: implicit
-    scopes:
-      'write:pets': modify pets in your account
-      'read:pets': read your pets
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
+  ApiKeyAuth:       
+      type: apiKey
+      in: header      
+      name: Authorization 
 definitions:
   Category:
     type: object

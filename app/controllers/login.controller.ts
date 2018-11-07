@@ -26,7 +26,7 @@ class LoginController {
                 phone: req.body.phone,
                 ci:  req.body.ci,
                 address: req.body.address,
-                imageId: img ? img : "" 
+                imageId: img ? img : Settings.defaultIds.image 
             }
             UserProfile.create(newUserRequest, (err, newUserProfile) => {
                 if (err) {
@@ -38,7 +38,8 @@ class LoginController {
                   return res.status(201).send(newUserProfile);
               })
   
-        });
+        })
+        .catch(err => console.log(err));
         
     }
 
