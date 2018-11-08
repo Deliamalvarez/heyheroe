@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
-import {Image, IImageDocument } from '../models/image.model';
+import { Image, IImageDocument } from '../models/image.model';
+import { Settings } from '../settings/conf';
 
 export class Utils {
   public static validateId(req, res) {
@@ -15,13 +16,18 @@ export class Utils {
     }
   }
 
-  public static uploadImg(data: Buffer){
+  public static uploadImg(data: Buffer) {
     return new Promise((resolve, reject) => {
-      Image.create({content: data}, (err, img) => {
+      if (data) {
+        Image.create({ content: data }, (err, img) => {
           if (err) return reject(err);
-          return resolve(img);
-      });
-  });
+          return resolve(img._id);
+        });
+      } else {
+        return resolve(Settings.defaultIds.image);
+      }
+
+    });
 
   }
 }

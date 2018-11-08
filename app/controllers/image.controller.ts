@@ -2,7 +2,6 @@ import {Image, IImageDocument } from '../models/image.model';
 
 class ImageController {
  public static createImg(req, res) {
-  const imgFormat = 'data:image/png;base64,long-String';
   const bindata = Buffer.from(req.body.content.split(",")[1],'base64');
   if (!bindata) {
     res.status(400).send({message: 'Body should follow the format: data:image/png;base64,long-String'})
